@@ -1,0 +1,145 @@
+https://github.com/quentin64/Rethanol.git
+
+library(fBasics)
+library(quantmod)
+
+# COSAN LIMITED equity price
+getSymbols("CZZ",from="2017-09-22",to="2019-09-22")
+dim(CZZ) 
+head(CZZ) 
+chartSeries(CZZ,type=c("line"),theme="white",TA=NULL)
+CZZ.dsrtn = na.omit(100*dailyReturn(CZZ,leading=FALSE,type='arithmetic')) 
+CZZ.dlrtn = na.omit(100*dailyReturn(CZZ,leading=FALSE,type='log'))
+CZZ.msrtn = na.omit(100*monthlyReturn(CZZ,leading=FALSE,type='arithmetic')) 
+CZZ.mlrtn = na.omit(100*monthlyReturn(CZZ,leading=FALSE,type='log')) 
+
+chartSeries(CZZ.dsrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(CZZ.dlrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(CZZ.msrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(CZZ.mlrtn,type=c("line"),theme="white",TA=NULL)
+
+# PACIFIC ETHANOL equity price
+getSymbols("PEIX",from="2017-09-22",to="2019-09-22")
+dim(PEIX) 
+head(PEIX) 
+chartSeries(PEIX,type=c("line"),theme="white",TA=NULL)
+PEIX.dsrtn = na.omit(100*dailyReturn(PEIX,leading=FALSE,type='arithmetic')) 
+PEIX.dlrtn = na.omit(100*dailyReturn(PEIX,leading=FALSE,type='log'))
+PEIX.msrtn = na.omit(100*monthlyReturn(PEIX,leading=FALSE,type='arithmetic')) 
+PEIX.mlrtn = na.omit(100*monthlyReturn(PEIX,leading=FALSE,type='log')) 
+
+chartSeries(PEIX.dsrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(PEIX.dlrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(PEIX.msrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(PEIX.mlrtn,type=c("line"),theme="white",TA=NULL)
+
+
+
+# Corn from FRED
+getSymbols("WPU012202",src="FRED",from="2017-09-22",to="2019-09-22" )
+dim(WPU012202)
+head(WPU012202)
+corn <- data.frame(na.omit(corn)) 
+ts.plot(corn) 
+corn <- WPU012202$WPU012202
+corn.dlrtn = 100*dailyReturn(WPU012202,leading=T,type='log')
+corn.dlrtn <- corn.dlrtn[paste("2017-09-22","2019-09-22",sep="/")]
+corn.dsrtn = 100*dailyReturn(WPU012202,leading=T,type='arithmetic')
+corn.dsrtn <- corn.dsrtn[paste("2017-09-22","2019-09-22",sep="/")]
+corn.msrtn = 100*dailyReturn(WPU012202,leading=T,type='arithmetic')
+corn.msrtn <- corn.msrtn[paste("2017-09-22","2019-09-22",sep="/")]
+corn.mlrtn = 100*dailyReturn(WPU012202,leading=T,type='log')
+corn.mlrtn <- corn.mlrtn[paste("2017-09-22","2019-09-22",sep="/")]
+
+chartSeries(corn.dsrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(corn.dlrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(corn.msrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(corn.mlrtn,type=c("line"),theme="white",TA=NULL)
+
+
+# Ethanol from FRED
+getSymbols("WPU06140341",src="FRED",from="2017-09-22",to="2019-09-22" )
+dim(WPU06140341)
+head(WPU06140341)
+etha <- data.frame(na.omit(etha)) 
+ts.plot(etha) 
+etha <- WPU06140341$WPU06140341
+etha.dlrtn = 100*dailyReturn(WPU012202,leading=T,type='log')
+etha.dlrtn <- etha.dlrtn[paste("2017-09-22","2019-09-22",sep="/")]
+etha.dsrtn = 100*dailyReturn(WPU012202,leading=T,type='arithmetic')
+etha.dsrtn <- etha.dsrtn[paste("2017-09-22","2019-09-22",sep="/")]
+etha.msrtn = 100*dailyReturn(WPU012202,leading=T,type='arithmetic')
+etha.msrtn <- etha.msrtn[paste("2017-09-22","2019-09-22",sep="/")]
+etha.mlrtn = 100*dailyReturn(WPU012202,leading=T,type='log')
+etha.mlrtn <- etha.mlrtn[paste("2017-09-22","2019-09-22",sep="/")]
+
+chartSeries(etha.dsrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(etha.dlrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(etha.msrtn,type=c("line"),theme="white",TA=NULL)
+chartSeries(etha.mlrtn,type=c("line"),theme="white",TA=NULL)
+
+QUESTION 1 
+
+# Data frame with all the daily/monthly  arithmetic/log returns
+dlrtn = cbind(CZZ.dlrtn,PEIX.dlrtn,corn.dlrtn,etha.dlrtn)
+colnames(dlrtn) = c("CZZ","PEIX","corn","etha") 
+
+dsrtn = cbind(CZZ.dsrtn,PEIX.dsrtn,corn.dsrtn,etha.dsrtn)
+colnames(dsrtn) = c("CZZ","PEIX","corn","etha") 
+
+mlrtn = cbind(CZZ.mlrtn,PEIX.mlrtn,corn.mlrtn,etha.mlrtn)
+colnames(mlrtn) = c("CZZ","PEIX","corn","etha") 
+
+msrtn = cbind(CZZ.msrtn,PEIX.msrtn,corn.msrtn,etha.msrtn)
+colnames(msrtn) = c("CZZ","PEIX","corn","etha") 
+
+# calculate summary statistics from the fBasics package
+basicStats(dlrtn)
+
+basicStats(dsrtn)
+
+basicStats(mlrtn)
+
+basicStats(msrtn)
+
+
+QUESTION 2
+
+hist(CZZ.dlrtn,nclass=40) # histogram of simple returns to compare to normal
+d1 = density(CZZ.dlrtn)
+names(d1)
+plot(d1$x,d1$y,type="l") # type is the letter l for line, not the numeral 1
+mu = mean(CZZ.dlrtn); s1 = sd(CZZ.dlrtn)
+x = seq(-10,10,0.1)
+y = dnorm(x,mean=mu,sd=s1)
+lines(x,y,lty=2) # imposes a normal density over the empirical one for comparison
+
+mean(CZZ.dlrtn)
+var(CZZ.dlrtn)
+sqrt(var(CZZ.dlrtn))
+skewness(CZZ.dlrtn)
+attr(,"method")
+kurtosis(CZZ.dlrtn)
+attr(,"method")
+
+# t test of zero mean returns
+t.test(CZZ.dlrtn) # t test of mean = 0
+t.test(CZZ.dlrtn,alternative=c("greater")) # one-sided test
+
+normalTest(CZZ.dlrtn,method='jb') # Jarque-Bera test of normality
+s1=skewness(CZZ.dlrtn)
+T <- length(CZZ.dlrtn) # calculate time dimension/sample size
+tst <- s1/sqrt(6/T) # test of skewness
+tst
+pv <- 2*(pnorm(tst)) # p value of test
+pv
+k4 <- kurtosis(CZZ.dlrtn)
+tst <- k4/sqrt(24/T) # test of excess kurtosis
+tst
+
+
+
+
+QUESTION 3
+
+
